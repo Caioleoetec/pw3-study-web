@@ -7,7 +7,7 @@ import { Disciplina } from '../models/disciplina';
   providedIn: 'root'
 })
 export class DisciplinaService {
-  URL: string = "http://localhost:8080"//link do servidor
+  URL: string = "http://localhost:8080/disciplinas"//link do servidor
   constructor(private httpCliente: HttpClient) { } //injetar o HttpClient através do angular (como @Autowired do java)
   buscarDisciplinas(): Observable<Disciplina[]>{
     return this.httpCliente.get<Disciplina[]>(this.URL);

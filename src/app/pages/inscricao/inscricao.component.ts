@@ -1,5 +1,7 @@
+import { Disciplina } from './../../models/disciplina';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
+import { DisciplinaService } from '../../services/disciplina.service';
 
 @Component({
   selector: 'app-inscricao',
@@ -33,25 +35,33 @@ export class InscricaoComponent {
       }),
       disponibilidade: this._formBuilder.array([this.criarDisponibilidade()])
     });
-    
-    agenda = [{ week_day: 'SEGUNDA', from: '', to: '' }];
-  
 
-    constructor(private _formBuilder: FormBuilder) {
+    agenda = [{ week_day: 'SEGUNDA', from: '', to: '' }];
+
+
+    constructor(private _formBuilder: FormBuilder, private disciplinaService: DisciplinaService) {
+      disciplinaService.buscarDisciplinas().subscribe(res=>{
+        this.disciplinas = res.map(e=>{
+          return{
+            value: e.id,
+            label: e.nome
+          }
+        })
+      })
     }
 
     addAgenda() {
       this.agenda.push({ week_day: 'SEGUNDA', from: '', to: '' });
     }
-  
+
     get disponibilidade(): FormArray {
       return this.monitorForm.get('disponibilidade') as FormArray;
     }
-  
+
     addDisponibilidade() {
       this.disponibilidade.push(this.criarDisponibilidade());
     }
-  
+
     criarDisponibilidade() {
       return this._formBuilder.group({
         diaSemana: [''],
@@ -59,8 +69,8 @@ export class InscricaoComponent {
         ate: ['']
       });
     }
-  
+
     onSalvar() {
-      
+
     }
 }
